@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace RoboMover
@@ -12,21 +11,40 @@ namespace RoboMover
     {
         static void Main(string[] args)
         {
-            StreamReader sr = new StreamReader("RoboInfo.txt");
-            string[] firstline = sr.ReadLine().Split();
-            int arraySize = Convert.ToInt32(firstline[0]);
-            int xpos = Convert.ToInt32(firstline[1]);
-            int ypos = Convert.ToInt32(firstline[2]);
-            int[,] grid = new int[arraySize, arraySize];
-            for (int i = 0; i < arraySize; i++)
+            int arraySize = 0;
+            int xpos = 0;
+            int ypos = 0;
+
+            using (StreamReader sr = new StreamReader("RoboInfo.txt"))
             {
-                string[] fileline = sr.ReadLine().Split();
-                for (int j = 0; j < arraySize; j++)
+                try
                 {
-                    grid[i, j] = Convert.ToInt32(fileline[j]);
+                    string[] firstline = sr.ReadLine().Split();
+                    arraySize = Convert.ToInt32(firstline[0]);
+                    xpos = Convert.ToInt32(firstline[1]);
+                    ypos = Convert.ToInt32(firstline[2]);
                 }
+                catch { Console.WriteLine("File does not exsist"); }
             }
-            sr.Close();
+
+            int[,] grid = new int[arraySize, arraySize];
+            
+            using (StreamReader sr = new StreamReader("RoboInfo.txt"))
+            {
+                try
+                {
+                    sr.ReadLine();
+                    for (int i = 0; i < arraySize; i++)
+                    {
+                        string[] fileline = sr.ReadLine().Split();
+                        for (int j = 0; j < arraySize; j++)
+                        {
+                            grid[i, j] = Convert.ToInt32(fileline[j]);
+                        }
+                    }
+                }
+                catch { Console.WriteLine("Array Error"); }
+            }
 
             bool more = true;
             grid[ypos, xpos] = 0;

@@ -14,7 +14,6 @@ namespace RoboMover
             int arraySize = 0;
             int xpos = 0;
             int ypos = 0;
-
             using (StreamReader sr = new StreamReader("RoboInfo.txt"))
             {
                 try
@@ -24,7 +23,7 @@ namespace RoboMover
                     xpos = Convert.ToInt32(firstline[1]);
                     ypos = Convert.ToInt32(firstline[2]);
                 }
-                catch { Console.WriteLine("File does not exsist"); }
+                catch { Console.WriteLine("File does not exsist or is an incorrect file"); }
             }
 
             int[,] grid = new int[arraySize, arraySize];
@@ -59,9 +58,9 @@ namespace RoboMover
                     Console.WriteLine();
                 }
                 Console.WriteLine("Which direction do you want to move?");
-                string choice = Console.ReadLine();
+                ConsoleKeyInfo choice = Console.ReadKey();
                 Console.Clear();
-                if (choice == "w")
+                if (choice.KeyChar == 'w')
                 {
                     if (ypos - 1 >= 0 && grid[ypos - 1, xpos] == 4)
                     {
@@ -75,7 +74,7 @@ namespace RoboMover
                         ypos--;
                     }
                 }
-                if (choice == "s")
+                if (choice.KeyChar == 's')
                 {
                     if (ypos + 1 < arraySize && grid[ypos + 1, xpos] == 4)
                     {
@@ -89,7 +88,7 @@ namespace RoboMover
                         ypos++;
                     }
                 }
-                if (choice == "a")
+                if (choice.KeyChar == 'a')
                 {
                     if (xpos - 1 >= 0 && grid[ypos, xpos - 1] == 4)
                     {
@@ -103,7 +102,7 @@ namespace RoboMover
                         xpos--;
                     }
                 }
-                if (choice == "d")
+                if (choice.KeyChar == 'd')
                 {
                     if (xpos + 1 < arraySize && grid[ypos, xpos + 1] == 4)
                     {
@@ -116,6 +115,11 @@ namespace RoboMover
                         grid[ypos, xpos + 1] = 0;
                         xpos++;
                     }
+                }
+                if (choice.KeyChar == 'q')
+                {
+                    more = false;
+                    Console.WriteLine("You have chosen to quit the game.");
                 }
             }
         }
